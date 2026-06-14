@@ -45,6 +45,7 @@ const faqs = [
         <span><b id="scoreHuman">0</b> Human</span>
       </div>
       <p class="verdict" id="verdict"></p>
+      <a id="shareVerdict" class="cta" target="_blank" rel="noopener">𝕏 Tweet my verdict</a>
     </div>
 
     <div class="filters">
@@ -126,6 +127,7 @@ const faqs = [
     const sM = document.getElementById('scoreMachine');
     const sH = document.getElementById('scoreHuman');
     const verdict = document.getElementById('verdict');
+    const shareVerdict = document.getElementById('shareVerdict');
 
     function recompute() {
       let m = 0, h = 0;
@@ -148,6 +150,11 @@ const faqs = [
         : gap > 0 ? '> Verdict: the evidence leans machine.'
         : gap === 0 ? '> Verdict: a dead heat. Decide for yourself.'
         : '> Verdict: you still believe he was human.';
+
+      const vurl = location.origin + '/evidence';
+      const vtext = `I weighed the evidence — Machine ${m} vs Human ${h}. Is Neo from The Matrix actually human? Decide for yourself:`;
+      shareVerdict.href =
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(vtext)}&url=${encodeURIComponent(vurl)}`;
     }
 
     evs.forEach((el) => el.querySelector('input').addEventListener('change', recompute));

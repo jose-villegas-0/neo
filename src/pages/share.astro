@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ClickToTweet from '../components/ClickToTweet.astro';
+
+const base = (Astro.site ?? new URL('http://localhost:4321')).href.replace(/\/$/, '');
+
+const tweets = [
+  `Everyone watches The Matrix assuming Neo is human. The films never actually prove it. In Reloaded he stops a swarm of machines with his MIND — in the real world. No human should be able to do that. What if Neo was a machine all along? ${base}`,
+  `The Architect literally calls "The One" a systemic anomaly the Machines designed, balanced and reload every cycle. So was Neo ever human… or just the machines' best product? 🤯 ${base}/architect-anomaly-explained`,
+  `"Neo" is an anagram of "One." "Thomas Anderson" means "son of man." The Matrix has been quietly telling us what Neo is the entire time. ${base}/neo-anagram-of-one`,
+  `Hot take: Neo isn't the human hero of The Matrix. He's the machines' most successful program — and the whole "war" is told by an unreliable narrator. ${base}/unreliable-narrator-matrix`,
+  `Neo stops the Sentinels with his mind OUTSIDE the Matrix, then collapses like an overloaded machine. The movie never explains it because the obvious explanation breaks the human story. ${base}/how-neo-stops-sentinels`,
+  `In Matrix Resurrections the machines literally rebuild Neo's body from scratch to power a new Matrix. We call him human. They treat him like hardware. Which is it? ${base}/matrix-resurrections-neo-machine`,
+  `Smith calls himself the negative to Neo's positive. The Oracle says they're two halves of the same equation. If Smith is a program… what does that make Neo? ${base}/neo-and-agent-smith-equation`,
+  `I scored the "is Neo human?" evidence and the machine case is winning. Weigh it yourself — interactive scorecard: ${base}/evidence`,
+];
+
+const redditPost = `Title: I don't think The Matrix ever proves Neo is human — and one scene basically gives it away
+
+We all watch The Matrix assuming Neo is a freed human. But the films never actually confirm it, and a few moments only make sense if he isn't.
+
+The big one: in Reloaded, Neo stops a swarm of Sentinels with his mind in the REAL WORLD, then passes out. By the films' own rules, humans can only affect the Matrix because they're plugged in. A human shouldn't be able to reach into hardware with his mind in reality.
+
+Then the Architect tells him "The One" is a systemic anomaly the Machines designed, integrated and reload every cycle — i.e. a feature of the machine system, not a random human. "Neo" is an anagram of "One." In Resurrections the machines literally rebuild his body.
+
+I'm not saying it's confirmed — there's real counter-evidence (he bleeds, he's pulled from a pod, he loves Trinity). But "Neo was a machine/construct all along" fits a surprising amount.
+
+Full breakdown + an interactive evidence scorecard here: ${base}
+
+Curious what this sub thinks — what's the strongest argument that he IS human?`;
+---
+
+<BaseLayout
+  title="Help Spread the Theory"
+  description="Ready-to-share tweets and a Reddit post arguing Neo from The Matrix may not be human. Copy, paste, post."
+  keywords={['matrix theory share', 'is neo human', 'neo machine theory']}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Share', path: '/share' },
+  ]}
+>
+  <div class="container">
+    <p class="eyebrow">Join the Investigation</p>
+    <h1>Help spread the theory</h1>
+    <p class="lede">
+      No bots, no spam — just the good stuff. Copy a tweet, fire it off, or drop
+      the Reddit post into r/matrix. Every share helps more people find the case.
+    </p>
+
+    <h2>Copy-and-paste tweets</h2>
+    <p>Hit <strong>Tweet this</strong> to open X with it pre-filled, or <strong>Copy</strong> to paste it anywhere.</p>
+    {tweets.map((t) => <ClickToTweet text={t} />)}
+
+    <h2>Reddit post (r/matrix · r/FanTheories)</h2>
+    <p>
+      Paste this into a text post. Be a real human in the comments — answer
+      replies, don't just drop and run. That's what makes a theory spread.
+    </p>
+    <textarea id="redditPost" readonly rows="16">{redditPost}</textarea>
+    <button type="button" id="copyReddit" class="cta ghost">Copy Reddit post</button>
+
+    <h2 style="margin-top:40px">Other ways to help</h2>
+    <ul>
+      <li>Take the <a href="/quiz">quiz</a> and share your result.</li>
+      <li>Play with the <a href="/evidence">evidence scorecard</a> and post your verdict.</li>
+      <li>Link the site in any "is Neo human / Matrix theory" thread you find.</li>
+    </ul>
+  </div>
+
+  <style>
+    textarea {
+      width: 100%; background: var(--panel); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+      font-family: var(--font-mono); font-size: 14px; line-height: 1.6;
+      resize: vertical; margin-bottom: 12px;
+    }
+    ul { line-height: 2; }
+  </style>
+
+  <script>
+    const btn = document.getElementById('copyReddit');
+    const ta = document.getElementById('redditPost') as HTMLTextAreaElement | null;
+    btn?.addEventListener('click', async () => {
+      if (!ta) return;
+      try {
+        await navigator.clipboard.writeText(ta.value);
+      } catch {
+        ta.select();
+        document.execCommand('copy');
+      }
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => (btn.textContent = 'Copy Reddit post'), 1800);
+    });
+  </script>
+</BaseLayout>

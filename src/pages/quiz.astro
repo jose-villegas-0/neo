@@ -51,7 +51,8 @@ const faqs = [
       <p class="eyebrow" id="resultTier"></p>
       <h2 id="resultTitle"></h2>
       <p id="resultBlurb"></p>
-      <p>
+      <p style="display:flex;gap:8px;flex-wrap:wrap">
+        <a id="shareResult" class="cta" target="_blank" rel="noopener">𝕏 Share my result</a>
         <a class="cta ghost" href="/evidence">Now weigh the real evidence →</a>
       </p>
     </div>
@@ -86,6 +87,10 @@ const faqs = [
         document.getElementById('resultTier').textContent = `Score: ${total}`;
         document.getElementById('resultTitle').textContent = pick.title;
         document.getElementById('resultBlurb').textContent = pick.blurb;
+        const shareUrl = location.origin + '/quiz';
+        const shareText = `I'm "${pick.title}" — are you The One or just another program? 🔌 Take the Matrix test:`;
+        document.getElementById('shareResult').href =
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
         const box = document.getElementById('result');
         box.hidden = false;
         box.scrollIntoView({ behavior: 'smooth', block: 'center' });

@@ -1,0 +1,81 @@
+---
+interface Props {
+  title: string;
+  tweet?: string;
+}
+const { title, tweet } = Astro.props;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const cleanPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const url = new URL(cleanPath, site).href.replace(/\/$/, '');
+const tweetText = tweet ?? title;
+
+const x = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`;
+const reddit = `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+const wa = `https://api.whatsapp.com/send?text=${encodeURIComponent(tweetText + ' ' + url)}`;
+const fb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+---
+
+<div class="sharebar" data-url={url} data-text={tweetText}>
+  <span class="share-label">Share the theory</span>
+  <a href={x} target="_blank" rel="noopener" class="sb x">𝕏</a>
+  <a href={reddit} target="_blank" rel="noopener" class="sb rd">Reddit</a>
+  <a href={wa} target="_blank" rel="noopener" class="sb wa">WhatsApp</a>
+  <a href={fb} target="_blank" rel="noopener" class="sb fb">Facebook</a>
+  <button type="button" class="sb copy share-copy">Copy link</button>
+  <button type="button" class="sb native share-native" hidden>Share…</button>
+</div>
+
+<style>
+  .sharebar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin: 28px 0; padding: 14px 16px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--panel);
+  }
+  .share-label {
+    font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--text-dim); margin-right: 4px;
+  }
+  .sb {
+    font-family: var(--font-mono); font-size: 13px; cursor: pointer;
+    color: var(--text); background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px;
+    text-decoration: none; transition: border-color 0.15s, color 0.15s;
+  }
+  .sb:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .sb.copy.done { color: var(--accent); border-color: var(--accent); }
+</style>
+
+<script>
+  function copyText(text: string) {
+    if (navigator.clipboard) return navigator.clipboard.writeText(text);
+    const t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); t.remove();
+    return Promise.resolve();
+  }
+
+  document.querySelectorAll<HTMLElement>('.sharebar').forEach((bar) => {
+    const url = bar.dataset.url || location.href;
+    const text = bar.dataset.text || document.title;
+
+    const copyBtn = bar.querySelector<HTMLButtonElement>('.share-copy');
+    copyBtn?.addEventListener('click', async () => {
+      await copyText(url);
+      copyBtn.textContent = 'Copied ✓';
+      copyBtn.classList.add('done');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy link';
+        copyBtn.classList.remove('done');
+      }, 1800);
+    });
+
+    const nativeBtn = bar.querySelector<HTMLButtonElement>('.share-native');
+    if (nativeBtn && (navigator as any).share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', () => {
+        (navigator as any).share({ title: document.title, text, url }).catch(() => {});
+      });
+    }
+  });
+</script>

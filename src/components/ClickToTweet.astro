@@ -1,0 +1,56 @@
+---
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+const intent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+---
+
+<div class="ctt">
+  <p class="ctt-text">{text}</p>
+  <div class="ctt-actions">
+    <a class="ctt-btn" href={intent} target="_blank" rel="noopener">𝕏 Tweet this</a>
+    <button type="button" class="ctt-copy" data-text={text}>Copy</button>
+  </div>
+</div>
+
+<style>
+  .ctt {
+    border: 1px solid var(--border); border-left: 3px solid var(--accent);
+    border-radius: 10px; background: var(--accent-soft);
+    padding: 18px 20px; margin: 18px 0;
+  }
+  .ctt-text { margin: 0 0 14px; color: var(--text); font-size: 1.05rem; line-height: 1.5; }
+  .ctt-actions { display: flex; gap: 8px; }
+  .ctt-btn {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    background: var(--accent); color: #04110a; border-radius: 8px;
+    padding: 7px 14px; text-decoration: none;
+  }
+  .ctt-btn:hover { text-decoration: none; filter: brightness(1.08); }
+  .ctt-copy {
+    font-family: var(--font-mono); font-size: 13px; cursor: pointer;
+    background: transparent; color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px;
+  }
+  .ctt-copy:hover { color: var(--accent); border-color: var(--accent); }
+  .ctt-copy.done { color: var(--accent); border-color: var(--accent); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.ctt-copy').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.text || '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const t = document.createElement('textarea');
+        t.value = text; document.body.appendChild(t); t.select();
+        document.execCommand('copy'); t.remove();
+      }
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1800);
+    });
+  });
+</script>
