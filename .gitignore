@@ -1,5 +1,7 @@
 # build output
 dist/
+# local poll data
+.data/
 # dependencies
 node_modules/
 # generated types

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Poll from '../components/Poll.astro';
 import evidence from '../data/evidence.json';
 
 const items = (evidence.items ?? []).slice().sort((a, b) => b.strength - a.strength);
@@ -34,6 +35,9 @@ const faqs = [
       Every clue from the films, rated by strength. Toggle the ones you find
       convincing and watch the case tilt.
     </p>
+
+    <Poll />
+
 
     <div class="scoreboard">
       <div class="bar">

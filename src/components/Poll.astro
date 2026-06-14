@@ -1,0 +1,220 @@
+---
+interface Props {
+  question?: string;
+}
+const { question = "The world's verdict: was Neo human or machine?" } = Astro.props;
+---
+
+<div class="poll" data-poll>
+  <p class="eyebrow">Live Poll</p>
+  <p class="poll-q">{question}</p>
+
+  <div class="poll-vote">
+    <button type="button" class="poll-btn human" data-choice="human">🧠 Human</button>
+    <button type="button" class="poll-btn machine" data-choice="machine">🤖 Machine</button>
+  </div>
+
+  <div class="poll-results" hidden>
+    <div class="poll-bar">
+      <div class="pb-seg pb-machine"><span class="pb-pct pm-pct">50%</span></div>
+      <div class="pb-seg pb-human"><span class="pb-pct ph-pct">50%</span></div>
+    </div>
+    <div class="poll-legend">
+      <span><i class="dot machine"></i> Machine</span>
+      <span class="pt-count">0 votes</span>
+      <span><i class="dot human"></i> Human</span>
+    </div>
+    <p class="pt-you"></p>
+    <a class="poll-share" target="_blank" rel="noopener">𝕏 Share the verdict</a>
+  </div>
+</div>
+
+<style>
+  .poll {
+    margin: 30px 0;
+    padding: 22px 22px 24px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--panel);
+  }
+  .poll-q {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 4px 0 18px;
+  }
+  .poll-vote {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .poll-btn {
+    flex: 1;
+    min-width: 140px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 11px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    transition: transform 0.12s, border-color 0.12s, background 0.12s;
+  }
+  .poll-btn.human:hover {
+    border-color: var(--human);
+    color: var(--human);
+    transform: translateY(-2px);
+  }
+  .poll-btn.machine:hover {
+    border-color: var(--machine);
+    color: var(--machine);
+    transform: translateY(-2px);
+  }
+  .poll-results {
+    margin-top: 6px;
+  }
+  .poll-bar {
+    display: flex;
+    height: 46px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .pb-seg {
+    display: flex;
+    align-items: center;
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    min-width: 38px;
+  }
+  .pb-machine {
+    background: var(--machine);
+    justify-content: flex-start;
+    padding-left: 12px;
+  }
+  .pb-human {
+    background: var(--human);
+    justify-content: flex-end;
+    padding-right: 12px;
+  }
+  .pb-pct {
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: #04110a;
+    font-size: 15px;
+  }
+  .pb-human .pb-pct {
+    color: #02101f;
+  }
+  .poll-legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .dot.machine {
+    background: var(--machine);
+  }
+  .dot.human {
+    background: var(--human);
+  }
+  .pt-you {
+    margin: 12px 0 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    min-height: 1em;
+  }
+  .poll-share {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px 16px;
+  }
+  .poll-share:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-poll]').forEach((root) => {
+    const voteBox = root.querySelector<HTMLElement>('.poll-vote')!;
+    const resultsBox = root.querySelector<HTMLElement>('.poll-results')!;
+    const pmPct = root.querySelector<HTMLElement>('.pm-pct')!;
+    const phPct = root.querySelector<HTMLElement>('.ph-pct')!;
+    const pmSeg = root.querySelector<HTMLElement>('.pb-machine')!;
+    const phSeg = root.querySelector<HTMLElement>('.pb-human')!;
+    const countEl = root.querySelector<HTMLElement>('.pt-count')!;
+    const youEl = root.querySelector<HTMLElement>('.pt-you')!;
+    const shareEl = root.querySelector<HTMLAnchorElement>('.poll-share')!;
+    const KEY = 'neo_poll_vote';
+
+    function render(data: { machine: number; human: number; total: number }) {
+      const total = data.total || data.machine + data.human;
+      const mPct = total ? Math.round((data.machine / total) * 100) : 50;
+      const hPct = total ? 100 - mPct : 50;
+      pmSeg.style.width = mPct + '%';
+      phSeg.style.width = hPct + '%';
+      pmPct.textContent = mPct + '%';
+      phPct.textContent = hPct + '%';
+      countEl.textContent = `${total.toLocaleString()} vote${total === 1 ? '' : 's'}`;
+
+      const you = localStorage.getItem(KEY);
+      if (you) youEl.textContent = `You voted: ${you === 'machine' ? '🤖 Machine' : '🧠 Human'}`;
+
+      const url = location.origin + '/evidence';
+      const text = `The internet is split on whether Neo from The Matrix was human or a machine — ${mPct}% say Machine. Cast your vote:`;
+      shareEl.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+
+      voteBox.hidden = true;
+      resultsBox.hidden = false;
+    }
+
+    async function load() {
+      try {
+        const r = await fetch('/api/results');
+        if (r.ok) {
+          const data = await r.json();
+          if (localStorage.getItem(KEY)) render(data);
+        }
+      } catch {
+        /* api unavailable (e.g. astro dev) — keep vote buttons visible */
+      }
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('.poll-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const choice = btn.dataset.choice as 'machine' | 'human';
+        localStorage.setItem(KEY, choice);
+        try {
+          const r = await fetch('/api/vote', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ choice }),
+          });
+          const data = await r.json();
+          render(data);
+        } catch {
+          render({ machine: choice === 'machine' ? 1 : 0, human: choice === 'human' ? 1 : 0, total: 1 });
+        }
+      });
+    });
+
+    load();
+  });
+</script>

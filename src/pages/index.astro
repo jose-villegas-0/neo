@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { marked } from 'marked';
 import ShareBar from '../components/ShareBar.astro';
 import EmailSignup from '../components/EmailSignup.astro';
+import Poll from '../components/Poll.astro';
 import pillar from '../data/pillar.json';
 import evidence from '../data/evidence.json';
 import { SITE_TITLE } from '../consts';
@@ -41,6 +42,10 @@ const keywords = [
       <a class="cta" href="/evidence">See the evidence →</a>
       <a class="cta ghost" href="/quiz" style="margin-left:10px">Take the quiz</a>
     </p>
+  </section>
+
+  <section class="container">
+    <Poll />
   </section>
 
   <article class="container" set:html={bodyHtml} />
