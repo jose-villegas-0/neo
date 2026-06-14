@@ -1,0 +1,175 @@
+---
+import '../styles/global.css';
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR, TWITTER_HANDLE } from '../consts';
+
+export interface Faq {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  type?: 'website' | 'article';
+  pubDate?: Date;
+  updatedDate?: Date;
+  keywords?: string[];
+  faqs?: Faq[];
+  image?: string;
+  noindex?: boolean;
+  breadcrumbs?: { name: string; path: string }[];
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  type = 'website',
+  pubDate,
+  updatedDate,
+  keywords = [],
+  faqs = [],
+  image = '/og-default.svg',
+  noindex = false,
+  breadcrumbs = [],
+} = Astro.props;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, site).href.replace(/\/$/, '') || site.href;
+const ogImage = new URL(image, site).href;
+const fullTitle =
+  type === 'website' && title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;
+
+// --- JSON-LD graph -------------------------------------------------
+const graph: Record<string, unknown>[] = [];
+
+graph.push({
+  '@type': 'WebSite',
+  '@id': `${site.href}#website`,
+  url: site.href,
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  inLanguage: 'en-US',
+});
+
+if (type === 'article') {
+  graph.push({
+    '@type': 'Article',
+    '@id': `${canonical}#article`,
+    headline: title,
+    description,
+    inLanguage: 'en-US',
+    datePublished: pubDate?.toISOString(),
+    dateModified: (updatedDate ?? pubDate)?.toISOString(),
+    author: { '@type': 'Organization', name: AUTHOR },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_TITLE,
+      url: site.href,
+    },
+    mainEntityOfPage: canonical,
+    keywords: keywords.join(', '),
+    image: ogImage,
+    isPartOf: { '@id': `${site.href}#website` },
+  });
+}
+
+if (faqs.length > 0) {
+  graph.push({
+    '@type': 'FAQPage',
+    '@id': `${canonical}#faq`,
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  });
+}
+
+if (breadcrumbs.length > 0) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.name,
+      item: new URL(b.path, site).href.replace(/\/$/, ''),
+    })),
+  });
+}
+
+const jsonld = { '@context': 'https://schema.org', '@graph': graph };
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <meta name="author" content={AUTHOR} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#05070a" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_US" />
+    {pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+    {updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:site" content={TWITTER_HANDLE} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a href="/" class="brand">is<b>neo</b>human?</a>
+        <nav class="nav">
+          <a href="/evidence">Evidence</a>
+          <a href="/quiz">Quiz</a>
+          <a href="/articles">Articles</a>
+          <a href="/about">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <span>© {new Date().getFullYear()} {SITE_TITLE} — An independent film-theory investigation.</span>
+          <span>
+            <a href="/evidence">Evidence</a> · <a href="/quiz">Quiz</a> ·
+            <a href="/about">About</a> · <a href="/rss.xml">RSS</a>
+          </span>
+        </div>
+        <p style="margin-top:16px;font-size:13px;opacity:0.6;max-width:640px">
+          Not affiliated with Warner Bros., Village Roadshow, or the creators of
+          The Matrix. This is independent critical analysis and fan theory.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

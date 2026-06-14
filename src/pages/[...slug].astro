@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, all: articles },
+  }));
+}
+
+const { entry, all } = Astro.props;
+const { Content } = await render(entry);
+const { data } = entry;
+
+const related = all
+  .filter((a) => a.id !== entry.id)
+  .sort(() => 0)
+  .filter((a) => a.data.category === data.category || a.data.featured)
+  .slice(0, 3);
+
+const dateFmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  keywords={data.keywords}
+  faqs={data.faqs}
+  type="article"
+  pubDate={data.pubDate}
+  updatedDate={data.updatedDate}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Articles', path: '/articles' },
+    { name: data.title, path: `/${entry.id}` },
+  ]}
+>
+  <article class="container">
+    <p class="eyebrow">
+      <a href="/articles" style="color:inherit">{data.category}</a>
+    </p>
+    <h1>{data.title}</h1>
+    {data.heroQuestion && <p class="lede">{data.heroQuestion}</p>}
+    <p class="meta">
+      Published {dateFmt(data.pubDate)}
+      {data.evidenceStrength && (
+        <>
+          {' · Evidence strength '}
+          <span class="strength">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <span class={n <= data.evidenceStrength ? 'on' : ''}></span>
+            ))}
+          </span>
+        </>
+      )}
+    </p>
+
+    <Content />
+
+    {data.faqs.length > 0 && (
+      <section class="faq">
+        <h2>People also ask</h2>
+        {data.faqs.map((f) => (
+          <details>
+            <summary>{f.question}</summary>
+            <p>{f.answer}</p>
+          </details>
+        ))}
+      </section>
+    )}
+
+    <hr />
+
+    {related.length > 0 && (
+      <section>
+        <h2>Keep investigating</h2>
+        <div class="grid">
+          {related.map((a) => (
+            <a class="card" href={`/${a.id}`}>
+              <span class="tag">{a.data.category}</span>
+              <h3>{a.data.title}</h3>
+              <p>{a.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <p style="margin-top:32px">
+      <a class="cta ghost" href="/evidence">Weigh all the evidence →</a>
+    </p>
+  </article>
+</BaseLayout>

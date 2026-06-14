@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
+import pillar from '../data/pillar.json';
+import evidence from '../data/evidence.json';
+import { SITE_TITLE } from '../consts';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const bodyHtml = marked.parse(pillar.bodyMarkdown);
+
+const topEvidence = (evidence.items ?? [])
+  .filter((i) => i.side === 'machine')
+  .sort((a, b) => b.strength - a.strength)
+  .slice(0, 3);
+
+const keywords = [
+  'is neo human',
+  'neo machine theory',
+  'neo robot theory',
+  'is neo a program',
+  'matrix neo not human',
+];
+---
+
+<BaseLayout
+  title={SITE_TITLE}
+  description={pillar.metaDescription}
+  keywords={keywords}
+  faqs={pillar.faqs}
+>
+  <section class="container hero">
+    <p class="eyebrow">A Matrix Investigation</p>
+    <h1>{pillar.heroHeadline}</h1>
+    <p class="lede">{pillar.heroSub}</p>
+    <p>
+      <a class="cta" href="/evidence">See the evidence →</a>
+      <a class="cta ghost" href="/quiz" style="margin-left:10px">Take the quiz</a>
+    </p>
+  </section>
+
+  <article class="container" set:html={bodyHtml} />
+
+  {topEvidence.length > 0 && (
+    <section class="container">
+      <h2>The strongest clues</h2>
+      <div class="grid">
+        {topEvidence.map((e) => (
+          <a class="card" href="/evidence">
+            <span class="strength">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <span class={n <= e.strength ? 'on' : ''}></span>
+              ))}
+            </span>
+            <h3>{e.claim}</h3>
+            <p>{e.sceneRef}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="container">
+    <h2>Read the full case</h2>
+    <div class="grid">
+      {articles.map((a) => (
+        <a class="card" href={`/${a.id}`}>
+          <span class="tag">{a.data.category}</span>
+          <h3>{a.data.title}</h3>
+          <p>{a.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {pillar.faqs.length > 0 && (
+    <section class="container faq">
+      <h2>Frequently asked</h2>
+      {pillar.faqs.map((f) => (
+        <details>
+          <summary>{f.question}</summary>
+          <p>{f.answer}</p>
+        </details>
+      ))}
+    </section>
+  )}
+</BaseLayout>

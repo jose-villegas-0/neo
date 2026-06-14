@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const categories = ['evidence', 'explainer', 'theory', 'analysis', 'listicle'];
+const labels: Record<string, string> = {
+  evidence: 'The Evidence',
+  explainer: 'Explainers',
+  theory: 'Theories',
+  analysis: 'Close Analysis',
+  listicle: 'The Rundown',
+};
+---
+
+<BaseLayout
+  title="All Articles"
+  description="Every article making the case that Neo from The Matrix may not be human — evidence, explainers, and theories."
+  keywords={['matrix theories', 'neo theory', 'is neo human articles']}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Articles', path: '/articles' },
+  ]}
+>
+  <div class="container">
+    <p class="eyebrow">The Investigation</p>
+    <h1>Every clue, examined</h1>
+    <p class="lede">
+      The complete case file on the most overlooked question in The Matrix.
+    </p>
+
+    {categories.map((cat) => {
+      const items = articles.filter((a) => a.data.category === cat);
+      if (items.length === 0) return null;
+      return (
+        <section>
+          <h2>{labels[cat]}</h2>
+          <div class="grid">
+            {items.map((a) => (
+              <a class="card" href={`/${a.id}`}>
+                <span class="tag">{a.data.category}</span>
+                <h3>{a.data.title}</h3>
+                <p>{a.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>

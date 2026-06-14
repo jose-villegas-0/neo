@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { AUTHOR } from '../consts';
+---
+
+<BaseLayout
+  title="About"
+  description="Who is behind The Anomaly Desk and the Is Neo Human? investigation into The Matrix."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+  ]}
+>
+  <div class="container">
+    <p class="eyebrow">About</p>
+    <h1>The Anomaly Desk</h1>
+    <p class="lede">
+      A small, obsessive film-analysis project dedicated to a single question
+      the Wachowskis never directly answered: <em>is Neo actually human?</em>
+    </p>
+
+    <p>
+      We re-watch the trilogy (plus <em>Matrix Resurrections</em>) frame by
+      frame, cross-reference the dialogue, and build the most rigorous,
+      good-faith version of a theory most fans dismiss without examining: that
+      Neo may be a machine-made construct rather than a freed human.
+    </p>
+
+    <h2>Our standard</h2>
+    <p>
+      Every claim on this site is tied to something that actually happens in
+      the films. We separate <strong>what is canon</strong> (the real-world
+      Sentinel scene, the Architect's dialogue, Neo's resurrection) from
+      <strong>what is interpretation</strong>. We argue a position, but we show
+      our work and present the counter-evidence honestly.
+    </p>
+
+    <h2>Not affiliated</h2>
+    <p>
+      {AUTHOR} is an independent fan project. We are not affiliated with Warner
+      Bros., Village Roadshow Pictures, or the creators of The Matrix. All film
+      references are made for purposes of criticism and commentary.
+    </p>
+
+    <p style="margin-top:28px">
+      <a class="cta" href="/evidence">Start with the evidence →</a>
+    </p>
+  </div>
+</BaseLayout>

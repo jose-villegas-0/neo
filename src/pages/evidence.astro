@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import evidence from '../data/evidence.json';
+
+const items = (evidence.items ?? []).slice().sort((a, b) => b.strength - a.strength);
+const faqs = [
+  {
+    question: 'What is the strongest evidence that Neo is not human?',
+    answer:
+      'In The Matrix Reloaded, Neo stops a swarm of Sentinels with his mind in the real world — outside the Matrix — then collapses. No ordinary human should be able to affect machines that way without an interface.',
+  },
+  {
+    question: 'Does The Matrix ever confirm Neo is human?',
+    answer:
+      'Not explicitly. We assume Neo is human because he begins as office worker Thomas Anderson and is extracted from a pod, but the films never independently verify his biology.',
+  },
+];
+---
+
+<BaseLayout
+  title="The Evidence: Human vs Machine"
+  description="An interactive scorecard of every clue about whether Neo from The Matrix is human or a machine. Weigh the evidence yourself."
+  keywords={['neo evidence', 'is neo human', 'neo machine evidence', 'matrix neo proof']}
+  faqs={faqs}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Evidence', path: '/evidence' },
+  ]}
+>
+  <div class="container">
+    <p class="eyebrow">Interactive Scorecard</p>
+    <h1>Weigh the evidence yourself</h1>
+    <p class="lede">
+      Every clue from the films, rated by strength. Toggle the ones you find
+      convincing and watch the case tilt.
+    </p>
+
+    <div class="scoreboard">
+      <div class="bar">
+        <div class="bar-machine" id="barMachine"></div>
+        <div class="bar-human" id="barHuman"></div>
+      </div>
+      <div class="bar-labels">
+        <span><b id="scoreMachine">0</b> Machine</span>
+        <span><b id="scoreHuman">0</b> Human</span>
+      </div>
+      <p class="verdict" id="verdict"></p>
+    </div>
+
+    <div class="filters">
+      <button data-filter="all" class="active">All</button>
+      <button data-filter="machine">Machine case</button>
+      <button data-filter="human">Human case</button>
+    </div>
+
+    <div id="evidenceList">
+      {items.map((e, i) => (
+        <label class="ev" data-side={e.side} data-strength={e.strength}>
+          <input type="checkbox" checked data-i={i} />
+          <div class="ev-body">
+            <div class="ev-top">
+              <span class={`side ${e.side}`}>{e.side === 'machine' ? 'Machine' : 'Human'}</span>
+              <span class="strength">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <span class={n <= e.strength ? 'on' : ''}></span>
+                ))}
+              </span>
+            </div>
+            <h3>{e.claim}</h3>
+            <p class="scene">{e.sceneRef}</p>
+            <p>{e.explanation}</p>
+            {e.articleSlug && (
+              <a href={`/${e.articleSlug}`}>Read the full breakdown →</a>
+            )}
+          </div>
+        </label>
+      ))}
+    </div>
+
+    {items.length === 0 && <p>Evidence is being compiled.</p>}
+  </div>
+
+  <style>
+    .scoreboard { margin: 28px 0 8px; }
+    .bar {
+      display: flex; height: 26px; border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--panel);
+    }
+    .bar-machine { background: var(--machine); transition: width 0.4s; }
+    .bar-human { background: var(--human); transition: width 0.4s; }
+    .bar-labels {
+      display: flex; justify-content: space-between; margin-top: 8px;
+      font-family: var(--font-mono); font-size: 14px; color: var(--text-dim);
+    }
+    .bar-labels b { color: var(--text); }
+    .verdict { font-family: var(--font-mono); color: var(--accent); margin-top: 12px; min-height: 1.4em; }
+    .filters { display: flex; gap: 8px; margin: 22px 0; flex-wrap: wrap; }
+    .filters button {
+      font-family: var(--font-mono); font-size: 13px; cursor: pointer;
+      background: var(--panel); color: var(--text-dim);
+      border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px;
+    }
+    .filters button.active { color: #04110a; background: var(--accent); border-color: var(--accent); }
+    .ev {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; cursor: pointer;
+    }
+    .ev input { margin-top: 6px; width: 18px; height: 18px; accent-color: var(--accent); }
+    .ev.off { opacity: 0.45; }
+    .ev-body { flex: 1; }
+    .ev-top { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .ev h3 { margin: 4px 0; font-size: 1.1rem; color: var(--text); }
+    .ev .scene { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin: 0 0 8px; }
+    .ev p { margin: 0 0 6px; font-size: 15px; }
+    .side { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 9px; border-radius: 999px; }
+    .side.machine { color: #04110a; background: var(--machine); }
+    .side.human { color: #03101f; background: var(--human); }
+  </style>
+
+  <script>
+    const list = document.getElementById('evidenceList');
+    const evs = Array.from(document.querySelectorAll('.ev'));
+    const barM = document.getElementById('barMachine');
+    const barH = document.getElementById('barHuman');
+    const sM = document.getElementById('scoreMachine');
+    const sH = document.getElementById('scoreHuman');
+    const verdict = document.getElementById('verdict');
+
+    function recompute() {
+      let m = 0, h = 0;
+      evs.forEach((el) => {
+        const cb = el.querySelector('input');
+        const strength = Number(el.dataset.strength);
+        el.classList.toggle('off', !cb.checked);
+        if (!cb.checked) return;
+        if (el.dataset.side === 'machine') m += strength;
+        else h += strength;
+      });
+      const total = m + h || 1;
+      barM.style.width = (m / total) * 100 + '%';
+      barH.style.width = (h / total) * 100 + '%';
+      sM.textContent = String(m);
+      sH.textContent = String(h);
+      const gap = m - h;
+      verdict.textContent =
+        gap > 6 ? '> Verdict: the machine case is overwhelming.'
+        : gap > 0 ? '> Verdict: the evidence leans machine.'
+        : gap === 0 ? '> Verdict: a dead heat. Decide for yourself.'
+        : '> Verdict: you still believe he was human.';
+    }
+
+    evs.forEach((el) => el.querySelector('input').addEventListener('change', recompute));
+
+    document.querySelectorAll('.filters button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filters button').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        evs.forEach((el) => {
+          el.style.display = f === 'all' || el.dataset.side === f ? '' : 'none';
+        });
+      });
+    });
+
+    recompute();
+  </script>
+</BaseLayout>
