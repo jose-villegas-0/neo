@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ShareBar from '../components/ShareBar.astro';
+import EmailSignup from '../components/EmailSignup.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
@@ -95,5 +96,7 @@ const dateFmt = (d: Date) =>
     <p style="margin-top:32px">
       <a class="cta ghost" href="/evidence">Weigh all the evidence →</a>
     </p>
+
+    <EmailSignup />
   </article>
 </BaseLayout>

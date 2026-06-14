@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ClickToTweet from '../components/ClickToTweet.astro';
+import EmailSignup from '../components/EmailSignup.astro';
 
 const base = (Astro.site ?? new URL('http://localhost:4321')).href.replace(/\/$/, '');
 
@@ -65,6 +66,8 @@ Curious what this sub thinks — what's the strongest argument that he IS human?
       <li>Play with the <a href="/evidence">evidence scorecard</a> and post your verdict.</li>
       <li>Link the site in any "is Neo human / Matrix theory" thread you find.</li>
     </ul>
+
+    <EmailSignup heading="Want the next theory first?" />
   </div>
 
   <style>

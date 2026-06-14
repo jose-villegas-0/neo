@@ -1,0 +1,112 @@
+---
+import { BUTTONDOWN_USERNAME } from '../consts';
+
+interface Props {
+  heading?: string;
+  blurb?: string;
+}
+const {
+  heading = 'Get the next piece of the case',
+  blurb = 'New evidence, new theories, straight to your inbox. No spam — just the Matrix rabbit hole.',
+} = Astro.props;
+
+const action = `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USERNAME}`;
+const enabled = BUTTONDOWN_USERNAME.length > 0;
+---
+
+{enabled && (
+  <aside class="signup">
+    <p class="eyebrow">The Newsletter</p>
+    <h3>{heading}</h3>
+    <p class="signup-blurb">{blurb}</p>
+    <form class="signup-form" action={action} method="post" target="bd-frame">
+      <input
+        type="email"
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="you@email.com"
+        aria-label="Email address"
+      />
+      <input type="hidden" name="embed" value="1" />
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-thanks" hidden>✓ Thanks — check your inbox to confirm.</p>
+    <iframe name="bd-frame" class="bd-frame" title="subscribe" tabindex="-1"></iframe>
+  </aside>
+)}
+
+<style>
+  .signup {
+    margin: 36px 0;
+    padding: 26px 24px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: linear-gradient(180deg, var(--accent-soft), var(--panel));
+  }
+  .signup h3 {
+    margin: 6px 0 8px;
+    font-size: 1.3rem;
+    color: var(--text);
+  }
+  .signup-blurb {
+    margin: 0 0 16px;
+    color: var(--text-dim);
+    font-size: 15px;
+  }
+  .signup-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .signup-form input[type='email'] {
+    flex: 1;
+    min-width: 220px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+  .signup-form input[type='email']:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .signup-form button {
+    background: var(--accent);
+    color: #04110a;
+    font-weight: 700;
+    border: none;
+    border-radius: 9px;
+    padding: 12px 22px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .signup-form button:hover {
+    filter: brightness(1.08);
+  }
+  .signup-thanks {
+    margin: 12px 0 0;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+  .bd-frame {
+    display: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('.signup-form').forEach((form) => {
+    form.addEventListener('submit', () => {
+      const wrap = form.closest('.signup');
+      const thanks = wrap?.querySelector<HTMLElement>('.signup-thanks');
+      // The POST goes to the hidden iframe; reveal the thank-you and reset.
+      setTimeout(() => {
+        form.style.display = 'none';
+        if (thanks) thanks.hidden = false;
+      }, 150);
+    });
+  });
+</script>
