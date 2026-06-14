@@ -34,7 +34,11 @@ const {
 } = Astro.props;
 
 const site = Astro.site ?? new URL('http://localhost:4321');
-const canonical = new URL(Astro.url.pathname, site).href.replace(/\/$/, '') || site.href;
+// Normalize to the clean URL (no .html, no trailing slash) so canonical,
+// og:url, sitemap and internal links all agree.
+const cleanPath =
+  Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const canonical = new URL(cleanPath, site).href.replace(/\/$/, '') || site.href;
 const ogImage = new URL(image, site).href;
 const fullTitle =
   type === 'website' && title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;

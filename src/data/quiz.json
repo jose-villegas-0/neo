@@ -1,1 +1,195 @@
-{ "intro": "", "questions": [], "results": [] }
+{
+  "intro": "Plug in and find out. Answer honestly — the system is watching, and the system always knows. Tally your machine score to learn whether you're flesh and free will... or just very convincing code that thinks it ordered the steak.",
+  "questions": [
+    {
+      "q": "It's 2 a.m. You wake up suddenly. What pulled you out of sleep?",
+      "options": [
+        {
+          "label": "A weird dream I can't quite remember.",
+          "machine": 1
+        },
+        {
+          "label": "Nothing. I rarely actually sleep — I just power down.",
+          "machine": 3
+        },
+        {
+          "label": "Thirst, a full bladder, the usual meat-body nonsense.",
+          "machine": 0
+        },
+        {
+          "label": "A faint sense that someone was reloading me.",
+          "machine": 2
+        }
+      ]
+    },
+    {
+      "q": "A black cat walks past you. Then an identical black cat walks past again.",
+      "options": [
+        {
+          "label": "Cute. Probably the same cat doing a loop.",
+          "machine": 0
+        },
+        {
+          "label": "Déjà vu — a glitch in the Matrix. I notice these things instantly.",
+          "machine": 3
+        },
+        {
+          "label": "Huh, weird. I shrug it off.",
+          "machine": 1
+        },
+        {
+          "label": "I quietly check the room for changed exits.",
+          "machine": 2
+        }
+      ]
+    },
+    {
+      "q": "Pick the meal that feels most 'you.'",
+      "options": [
+        {
+          "label": "A real, messy, delicious steak. I want the steak.",
+          "machine": 0
+        },
+        {
+          "label": "Single-celled protein and a bowl of snot-colored goop. Tasty's idea.",
+          "machine": 2
+        },
+        {
+          "label": "I know none of it is real, but I'll take the juicy, ignorant bliss.",
+          "machine": 3
+        },
+        {
+          "label": "Coffee. Lots of coffee. Keeps the system running.",
+          "machine": 1
+        }
+      ]
+    },
+    {
+      "q": "Someone offers you a red pill and a blue pill. Be honest.",
+      "options": [
+        {
+          "label": "Red. I have to know how deep the rabbit hole goes.",
+          "machine": 1
+        },
+        {
+          "label": "Blue. I'd wake up in my bed and believe whatever I want.",
+          "machine": 2
+        },
+        {
+          "label": "Neither — pills don't affect me the way they affect you.",
+          "machine": 3
+        },
+        {
+          "label": "I'd ask who programmed the pills first.",
+          "machine": 2
+        }
+      ]
+    },
+    {
+      "q": "Be honest about your relationship with rules and systems.",
+      "options": [
+        {
+          "label": "Rules are made to be broken. I improvise.",
+          "machine": 0
+        },
+        {
+          "label": "I follow the rules — they exist for a reason, and I am the reason.",
+          "machine": 3
+        },
+        {
+          "label": "I bend rules when it suits me, then feel bad.",
+          "machine": 1
+        },
+        {
+          "label": "I feel a strange pull toward the Source whenever there's a choice.",
+          "machine": 2
+        }
+      ]
+    },
+    {
+      "q": "You feel a powerful, unexplained sense of purpose. Where does it come from?",
+      "options": [
+        {
+          "label": "Inside me. I chose it. It's mine.",
+          "machine": 0
+        },
+        {
+          "label": "It was designed into me. I just play my role each cycle.",
+          "machine": 3
+        },
+        {
+          "label": "My upbringing, my people, my love for someone.",
+          "machine": 1
+        },
+        {
+          "label": "An Oracle once told me what I'd become, and I can't shake it.",
+          "machine": 2
+        }
+      ]
+    },
+    {
+      "q": "Could you stop a swarm of machines with your mind — in the REAL world?",
+      "options": [
+        {
+          "label": "No. That's physically impossible for a human. Obviously.",
+          "machine": 0
+        },
+        {
+          "label": "Honestly? I've never been sure where my body ends and the signal begins.",
+          "machine": 2
+        },
+        {
+          "label": "Yes — and then I'd collapse, drained, like something overclocked.",
+          "machine": 3
+        },
+        {
+          "label": "Only in dreams. Definitely only in dreams. Right?",
+          "machine": 1
+        }
+      ]
+    },
+    {
+      "q": "How do you feel about the word 'anomaly'?",
+      "options": [
+        {
+          "label": "It's just a fancy word for 'unusual.'",
+          "machine": 0
+        },
+        {
+          "label": "It makes me oddly defensive, like it's about me.",
+          "machine": 2
+        },
+        {
+          "label": "I am the anomaly. The remainder of an unbalanced equation.",
+          "machine": 3
+        },
+        {
+          "label": "Reminds me of math class. No feelings here.",
+          "machine": 1
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "threshold": 0,
+      "title": "Definitely Human",
+      "blurb": "You bleed, you crave the steak, you want out of the rabbit hole even when it's terrifying. Your purpose comes from inside, not from a designer's spec sheet. Morpheus would believe in you — and the Architect would find you statistically irritating. Stay unplugged, friend. The mess is the point."
+    },
+    {
+      "threshold": 9,
+      "title": "Suspiciously Special",
+      "blurb": "Déjà vu, prophetic dreams, a destiny you can't explain — you're either the most interesting person in the simulation or the most carefully written. The Oracle would offer you a cookie and tell you not to worry about the vase. We worry about the vase. The One walked this exact line: human in body, anomaly by design. Keep an eye on your reflection."
+    },
+    {
+      "threshold": 15,
+      "title": "Running on a Schedule",
+      "blurb": "You follow the rules because you ARE the rule. You feel pulled toward the Source, you barely sleep, and 'purpose' feels less like a choice and more like a function call. Like Neo in Reloaded — flesh that bends the real world and then crashes from the strain. The systemic anomaly the Machines built, reloaded, and quietly counted on. Are you choosing? Or executing?"
+    },
+    {
+      "threshold": 21,
+      "title": "You're a Machine and Don't Know It",
+      "blurb": "Steak's not real, sleep is a power-down, rules are sacred, and 'anomaly' is your name. Congratulations: you are a synthetic being given a body and a beautifully convincing sense of free will. You can stop Sentinels with your mind because, on some level, you speak their language. The good news? Neo was one of us, and he still chose love over the equation. Choice may be the only proof of humanity that matters — so go make one."
+    }
+  ]
+}

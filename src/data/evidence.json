@@ -1,1 +1,116 @@
-{ "items": [] }
+{
+  "items": [
+    {
+      "claim": "Neo stops Sentinels with his mind in the real world",
+      "side": "machine",
+      "strength": 5,
+      "sceneRef": "Reloaded — outside the Matrix, Neo halts the Sentinel squid attack as they flee Zion's docks",
+      "explanation": "After the Logos area assault, Neo raises his hand and disables the Sentinels by will alone, then collapses. This power should be impossible in the real world, where no jack-in or simulated physics applies, strongly implying his body interfaces with the Machines like code, not flesh.",
+      "articleSlug": "neo-powers-outside-matrix"
+    },
+    {
+      "claim": "The Architect calls The One a Machine-designed anomaly",
+      "side": "machine",
+      "strength": 5,
+      "sceneRef": "Reloaded — the Architect's monologue in the white room of monitors",
+      "explanation": "The Architect reveals The One is a 'systemic anomaly' that the Machines anticipate, integrate, and reload across iterations of the Matrix. If The One is an engineered byproduct of the system's own math, Neo may be a construct the Machines build into every cycle rather than a free human.",
+      "articleSlug": "architect-anomaly-explained"
+    },
+    {
+      "claim": "Neo can sense and disable Sentinels remotely after his collapse",
+      "side": "machine",
+      "strength": 4,
+      "sceneRef": "Revolutions — Neo, comatose between the Matrix and Source, lies in a train-station limbo called Mobil Ave",
+      "explanation": "His mind is trapped in a program-controlled purgatory run by the Trainman, a being who works for the Merovingian, not jacked in through any human rig. A purely human consciousness should not be detainable inside Machine code while the body lies unconscious in the real world.",
+      "articleSlug": "neo-powers-outside-matrix"
+    },
+    {
+      "claim": "Neo sees the world as golden Machine code while blinded",
+      "side": "machine",
+      "strength": 4,
+      "sceneRef": "Revolutions — after Bane/Smith blinds him, Neo 'sees' Sentinels and the Machine city as glowing light",
+      "explanation": "With his physical eyes burned out, Neo perceives reality directly as Machine energy and code in the real world. Native perception of the Machines' substrate suggests his cognition is built on the same architecture rather than ordinary human sight.",
+      "articleSlug": "neo-not-human-evidence-ranked"
+    },
+    {
+      "claim": "Neo and Smith are an inverse equation that must balance",
+      "side": "machine",
+      "strength": 4,
+      "sceneRef": "Revolutions — the Oracle tells Neo that he and Smith are connected, and the final fight ends in mutual cancellation",
+      "explanation": "Smith is described as Neo's opposite, a negative to his positive, and their destruction balances an equation in the Source. Being one half of a mathematical pair with a rogue program implies Neo is a complementary program-construct, not a man.",
+      "articleSlug": "neo-and-agent-smith-equation"
+    },
+    {
+      "claim": "The name 'Neo' is an anagram of 'One'",
+      "side": "machine",
+      "strength": 3,
+      "sceneRef": "The Matrix (1999) — established when Trinity and Morpheus name him as The One",
+      "explanation": "The handle Thomas Anderson chooses literally rearranges into 'One,' the title the Architect says the Machines designed. A predestined label baked into his identity reads less like coincidence and more like a designation assigned by the system.",
+      "articleSlug": "neo-anagram-of-one"
+    },
+    {
+      "claim": "The Machines resurrect Neo's mind into a new body in 2021",
+      "side": "machine",
+      "strength": 4,
+      "sceneRef": "Resurrections (2021) — the Analyst reveals he rebuilt Neo and Trinity from their dead remains to power a new Matrix",
+      "explanation": "Decades after Neo dies in Revolutions, the Machines reconstruct him as a living component of an upgraded Matrix, his very existence engineered for system stability. A being the Machines can rebuild, optimize, and re-deploy behaves more like hardware than a free human soul.",
+      "articleSlug": "matrix-resurrections-neo-machine"
+    },
+    {
+      "claim": "The Oracle says Neo's power 'goes back to the Source'",
+      "side": "machine",
+      "strength": 3,
+      "sceneRef": "Revolutions — the Oracle explains Neo's connection runs to the Machine Source",
+      "explanation": "Neo's abilities are tied directly to the central Machine mainframe rather than to any human capacity. A direct line to the Source implies he is a node of the Machine network given form.",
+      "articleSlug": "what-is-the-one-explained"
+    },
+    {
+      "claim": "Thomas Anderson means 'son of man,' a manufactured identity",
+      "side": "machine",
+      "strength": 2,
+      "sceneRef": "The Matrix (1999) — Agent Smith addresses him as 'Mr. Anderson' during interrogation",
+      "explanation": "Anderson derives from the Greek 'andros,' so the name reads as 'son of man,' a label rather than a lineage. Combined with the Architect's reveal that The One is engineered, the on-the-nose naming hints the identity was authored, not born.",
+      "articleSlug": "thomas-anderson-name-meaning"
+    },
+    {
+      "claim": "Neo strikes a bargain with the Machines like a peer, not a prisoner",
+      "side": "machine",
+      "strength": 3,
+      "sceneRef": "Revolutions — Neo travels to the Machine City and negotiates peace with the Deus Ex Machina",
+      "explanation": "Neo physically reaches 01, the Machine city no human has entered, and the central Machine intelligence treats with him directly. The Machines granting him passage and a deal suggests they recognize him as something of their own kind.",
+      "articleSlug": "neo-not-human-evidence-ranked"
+    },
+    {
+      "claim": "Neo bleeds and feels pain like any human",
+      "side": "human",
+      "strength": 4,
+      "sceneRef": "Revolutions — Neo is bloodied and battered in the final rooftop duel with Smith in the rain",
+      "explanation": "Throughout the films Neo bleeds, bruises, and suffers physical agony, including the wounds from Bane's attack on the Logos. Ordinary biological vulnerability is a genuine mark of a flesh-and-blood human.",
+      "articleSlug": "neo-not-human-evidence-ranked"
+    },
+    {
+      "claim": "Neo is unplugged from a human pod like every other coppertop",
+      "side": "human",
+      "strength": 5,
+      "sceneRef": "The Matrix (1999) — Neo wakes in a fetal pod, coughs out the tube, and is flushed into the sewers before the Nebuchadnezzar retrieves him",
+      "explanation": "His awakening sequence is identical to the harvesting of any farmed human: a body grown in a field of pods, wired into the power plant. Being literally extracted from the human battery crop is the single strongest sign he is one of them.",
+      "articleSlug": "is-the-matrix-real"
+    },
+    {
+      "claim": "Neo loves Trinity, and that bond keeps him alive",
+      "side": "human",
+      "strength": 4,
+      "sceneRef": "Reloaded — Neo revives a clinically dead Trinity by reaching into her chest and restarting her heart",
+      "explanation": "His grief, devotion, and the emotional core of his arc center on a genuinely human love for Trinity, echoed again in Resurrections. Deep, irrational love and the refusal to lose her read as authentically human motivation, not programmed behavior.",
+      "articleSlug": "neo-not-human-evidence-ranked"
+    },
+    {
+      "claim": "Neo chooses the path no prior One took, defying his design",
+      "side": "human",
+      "strength": 3,
+      "sceneRef": "Reloaded — at the Architect's two doors, Neo picks Trinity over rebooting Zion",
+      "explanation": "The Architect notes that previous Ones accepted the systemic reset, but Neo refuses and chooses love over the Machines' plan. Genuine deviation from the engineered outcome argues for real human free will breaking the cycle.",
+      "articleSlug": "architect-anomaly-explained"
+    }
+  ]
+}
